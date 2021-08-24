@@ -1,0 +1,137 @@
+<div class="Container">
+    <div class="row {% if section.settings.image_align == 'right' %}row-reverse{% endif %}">
+        <div class="featured__image">
+            {%- capture supported_sizes -%}{%- render 'image-size', sizes: '400,600,700,800,900,1000,1200', image: section.settings.image -%}{%- endcapture -%}
+    
+            <div class="AspectRatio" style="--aspect-ratio: {{ section.settings.image.aspect_ratio }}">
+                {%- assign image_url = section.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                <img class="Image--lazyLoad Image--slideCenter" data-src="{{ image_url }}" data-expand="-200" data-widths="[{{ supported_sizes }}]" data-sizes="auto" alt="{{ section.settings.image.alt | escape }}">
+            
+                <noscript>
+                    <img src="{{ section.settings.image | img_url: '2048x' }}" alt="{{ section.settings.image.alt | escape }}">
+                </noscript>
+            </div>
+            <div class="caption Rte">
+                <h3>
+                    {{section.settings.banner_title}}
+                </h3>
+                
+                <p class="author">{{section.settings.banner_author}}</p>
+                <a class="Button Button--primary" href="{{section.settings.button_link}}">{{section.settings.button_text}}</a>
+            </div>
+        </div>
+        <div class="featured__content image--{{section.settings.image_align}}">
+            <div class="SectionHeader">
+                <h2 class="SectionHeader__Heading Heading u-h1">{{section.settings.title}}</h2>
+                <div class="SectionHeading__Description">
+                    {{section.settings.icon}}
+                    <p>{{section.settings.sub_title}}</p>
+                </div>
+            </div>
+            <div class="SectionContent">
+                <div class="ProductList ProductList--carousel Carousel">
+                    {% for block in section.blocks %}
+                        <div class="Carousel__Cell">
+                            {% assign product = all_products[block.settings.product] %}
+                            {%- render 'product-item', product: product, show_product_info: true, show_labels: true -%}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% schema %}
+{
+    "name": "Image with products",
+    "class": "featured__image-with-prodcts",
+    "settings": [
+        {
+            "type": "header",
+            "content": "heading"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+        },
+        {
+            "type": "html",
+            "id": "icon",
+            "label": "Icon"
+        },
+        {
+            "type": "text",
+            "id": "sub_title",
+            "label": "Sub title"
+        },
+        {
+            "type": "header",
+            "content": "banner"
+        },
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+        },
+        {
+            "type": "select",
+            "id": "image_align",
+            "label": "Image align",
+            "options": [
+                {
+                    "value": "left",
+                    "label": "Left"
+                },
+                {
+                    "value": "right",
+                    "label": "RIght"
+                }
+            ]
+        },
+        {
+            "type": "header",
+            "content": "caption"
+        },
+        {
+            "type": "richtext",
+            "id": "banner_title",
+            "label": "Title"
+        },
+        {
+            "type": "text",
+            "id": "banner_author",
+            "label": "Author"
+        },
+        {
+            "type": "text",
+            "id": "button_text",
+            "label": "Button text"
+        },
+        {
+            "type": "url",
+            "id": "button_link",
+            "label": "Link"
+        }
+    ],
+    "blocks": [
+        {
+            "name": "product",
+            "type": "product",
+            "settings": [
+                {
+                    "type": "product",
+                    "id": "product",
+                    "label": "Product"
+                }
+            ]
+        }
+    ],
+    "presets": [
+    {
+      "category": "Collection",
+      "name": "Featured Image and Products"
+    }
+  ]
+}
+{% endschema %}

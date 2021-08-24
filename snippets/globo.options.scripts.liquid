@@ -1,0 +1,72 @@
+<script>
+  var Globo = Globo || {}
+  Globo.Options = Globo.Options || {}
+  Globo.Options.url = "https://option.globosoftware.net"
+  Globo.Options.themeInfo = {"id":116085260465,"name":"Lou Lou & Company + Upsell popup","role":"main","theme_store_id":855,"theme_name":"Prestige","theme_version":"4.7.2"}
+  {% raw %}
+  Globo.Options.shop = {
+    id : 9106,
+    url : 'lou-lou-company.myshopify.com',
+    settings: {"display":{"show_tooltip":true},"price":{"seperator":"|","label_addon":"(+ {{addon}})","show_for_input":true,"show_for_option":true,"show_addon_message":true,"hide_additional_payment_button":true,"show_discount_box_on_cart":true},"translation":{"selection_will_add":"Selection will add {{addon}} to the price","custom_product_name":"{{product_title}} - Selections","discount_label":"Discount","discount_placeholder":"Enter a discount code","discount_apply_button":"Apply","discount_applied":"Discount Applied","discount_not_exist":"Enter a valid discount code","discount_not_valid":"Discount code is not valid for the items in your cart"}},
+    pricing: {
+      features: {
+        fileUpload: 2,
+        removeCopyright: false
+      }
+    }
+  }
+  {% endraw %}
+  
+  Globo.Options.money_format = "{{ shop.money_format | replace: '"', "'" }}";
+  {% if product %}
+    Globo.Options.product = {{ product | json }}
+    Globo.Options.product.collections = {{ product.collections | map: 'id' | json }}
+  {% endif %}
+  {% if customer %}
+    Globo.Options.customer = {
+      id: '{{ customer.id }}',
+      name: '{{ customer.name }}',
+      email: '{{ customer.email }}'
+    }
+  {% endif %}
+  {% if cart %}
+    Globo.Options.cart = {{ cart | json }}
+  {% endif %}
+  Globo.Options.page = {
+    title: document.title,
+    href: window.location.href,
+    type: '{{request.page_type}}'
+  }
+  
+  Globo.Options.options = []
+</script>
+{% render 'globo.options.data.27441' %}
+{% render 'globo.options.data.27642' %}
+<style>
+  [data-gpo-is-enabled="true"][data-gpo-cart-hide-additional-payment-button="true"] [data-shopify="dynamic-checkout-cart"],
+  [data-gpo-is-enabled="true"][data-gpo-product-hide-additional-payment-button="true"] [data-shopify="payment-button"],
+  button.gpo-original-shopify-button,
+  input.gpo-original-shopify-button,
+  input#addToCart.gpo-original-shopify-button,
+  a.gpo-original-shopify-button,
+  .gpo-original-shopify-button {
+    display: none !important;
+  }
+  .gpo-original-checkout-button {
+    display: none !important;
+  }
+  button.gpo-clone-checkout-button,
+  input.gpo-clone-checkout-button,
+  a.gpo-clone-checkout-button {
+    display: initial !important;
+    cursor: pointer !important;
+  }
+  .cart-flyout a.gpo-clone-checkout-button,
+  #mini-cart form.cart a.gpo-clone-checkout-button {
+    display: block !important;
+  }
+</style>
+{% capture GPO_appScript %}{{ 'globo.options.index.js' | asset_url }}{% endcapture %}
+{% assign GPO_assetsPath = GPO_appScript | split: 'globo.options.index.js' | first %}
+<script>Globo.Options.__webpack_public_path__ = "{{ GPO_assetsPath }}globo.options."</script>
+<script src="{{GPO_appScript}}" async></script>

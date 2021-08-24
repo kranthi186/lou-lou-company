@@ -1,0 +1,134 @@
+<div class="Container">
+    <div class="row">
+        <div class="featured--half featured--image">
+            {% if section.blocks.size > 0 %}
+            <div class="video-content">
+              {% for block in section.blocks %}
+                <div class="video-item">
+                    {%- capture supported_sizes -%}{%- render 'image-size', sizes: '400,600,700,800,900,1000,1200', image: block.settings.image -%}{%- endcapture -%}
+                    <a href="{{block.settings.link}}">
+                        <div class="AspectRatio" style="max-width: {{ block.settings.image.width }}px; --aspect-ratio: {{ block.settings.image.aspect_ratio }}">
+                            {%- assign image_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                            <img class="Image--lazyLoad Image--slide{{ block.settings.image_position | capitalize }}" data-src="{{ image_url }}" data-expand="-200" data-widths="[{{ supported_sizes }}]" data-sizes="auto" alt="{{ block.settings.image.alt | escape }}">
+        
+                            <noscript>
+                                <img src="{{ section.settings.image | img_url: '800x' }}" alt="{{ section.settings.image.alt | escape }}">
+                            </noscript>
+                            <div class="play">
+                                {% include 'icon' with 'play' %}
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <div class="item-head"><h3>{{ block.settings.video_title }}</h3></div>
+                    
+                    <aside id="tutorial_popup--{{block.id}}" class="TutorialPopup" data-section-id="{{ block.id }}" data-section-type="tutorial-popup" data-section-settings='{{ section_settings }}' aria-hidden="true">
+                        <div class="popup-content">
+                            <button class="TutorialPopup__Close" data-action="close-popup" aria-label="{{ 'general.popup.close' | t }}">{% render 'icon' with 'close' %}</button>
+                
+                            {%- if block.settings.video_title != blank -%}
+                              <h2 class="TutorialPopup__Heading Heading u-h2">{{ block.settings.video_title | escape }}</h2>
+                            {%- endif -%}
+                    
+                            {%- if block.settings.igtv_embed_code != blank -%}
+                              <div class="TutorialPopup__Content">
+                                {{ block.settings.igtv_embed_code }}
+                              </div>
+                            {%- endif -%}
+                        </div>
+                    </aside>
+                </div>
+              {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <div class="featured--half featured--text">
+            <div class="content">
+                {% if section.settings.title %}
+                <h1 class="u-h1">{{ section.settings.title }}</h1>
+                {% endif %}
+                {% if section.settings.subtitle %}
+                    <div class="SectionHeading__Description">
+                        <p class="sub-title">{{ section.settings.subtitle }}</p>
+                    </div>
+                {% endif %}
+                {{section.settings.text}}
+                {% if section.settings.button_text != blank %}
+                <a class="Button Button--primary" href="{{section.settings.button_link}}">{{section.settings.button_text}}</a>
+                {% endif %}
+                
+              </div>
+        </div>
+    </div>
+</div>
+
+
+    
+{% schema %}
+    {
+      "name": "IGTV Tutorial",
+      "class": "tutorial-text-section",
+      "max_blocks": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Lou Lou Tutorials"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Sub title",
+          "default": "Sweet and useful"
+        },
+        {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text"
+        },
+        {
+            "type": "text",
+            "id": "button_text",
+            "label": "Button Title"
+        },
+        {
+            "type": "url",
+            "id": "button_link",
+            "label": "Button Link"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "instagram",
+          "name": "IGTV",
+          "settings": [
+            {
+                "type": "image_picker",
+                "id": "image",
+                "label": "Image"
+            },
+            {
+              "type": "text",
+              "id": "video_title",
+              "label": "Title",
+              "default": "Title"
+            },
+            {
+                "type": "url",
+                "id": "link",
+                "label": "Link"
+            }
+          ]
+        }
+      ],
+      "presets": [
+            {
+            "category": "Text",
+            "name": "Tutoral text",
+            "settings": {}
+            }
+        ]
+    }
+{% endschema %}
+    

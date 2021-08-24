@@ -1,0 +1,216 @@
+<style>
+{% include 'font-awesome.css' %}
+</style>
+<div class="heading">
+  {% if section.settings.title %}
+  <h1 class="u-h1">{{ section.settings.title }}</h1>
+  {% endif %}
+  {% if section.settings.subtitle %}
+  <h2 class="sub-title">{{ section.settings.subtitle }}</h2>
+  {% endif %}
+</div>
+
+{% if section.blocks.size > 0 %}
+<div class="video-content">
+  {% for block in section.blocks %}
+    {% if forloop.index <= 3 %}
+
+      {% if forloop.first %}
+        {% if section.settings.popular_video_title != blank %}
+        <div class="most-popular-header">
+          <h2>{{ section.settings.popular_video_title }}</h2>
+        </div>
+        {% endif %}
+      <div class="video-items">
+      {% endif %}
+
+      {% if block.settings.igtv_embed_code != blank %}
+        <div class="video-item">
+
+          <div class="item-head"><h3>{{ block.settings.video_title }}</h3></div>
+          {{ block.settings.igtv_embed_code }}
+
+          {% comment %}
+          {% capture item_head %}
+          {% if block.settings.video_title != blank %}
+          <div class="item-head"><h3>{{ block.settings.video_title }}</h3></div>
+          {% endif %}
+          {% endcapture %}
+
+          {% if section.settings.align_igtv_title == 'top' %}
+            {{ item_head }}
+          {% endif %}
+
+          {% include 'IGTV-item' id: block.settings.igtv_id %}
+
+          {% if section.settings.align_igtv_title == 'bottom' %}
+            {{ item_head }}
+          {% endif %}
+          {% endcomment %}
+        </div>
+      {% endif %}
+      
+      {% if forloop.index == 3 %}
+      </div>
+      {% elsif section.blocks.size < 3 %}
+        {% if forloop.last %}
+          </div>
+        {% endif %}
+      {% endif %}
+
+    {% else %}
+      
+      {% if forloop.index == 4 %}
+        {% if section.settings.all_video_title != blank %}
+        <div class="all-videos-header">
+          <h2>{{ section.settings.all_video_title }}</h2>
+        </div>
+        {% endif %}
+      <div class="video-items">
+      {% endif %}
+
+      {% if block.settings.igtv_embed_code != blank %}
+        <div class="video-item">
+          <div class="item-head"><h3>{{ block.settings.video_title }}</h3></div>
+          {{ block.settings.igtv_embed_code }}
+          {% comment %}
+          {% capture item_head %}
+          {% if block.settings.video_title != blank %}
+          <div class="item-head"><h3>{{ block.settings.video_title }}</h3></div>
+          {% endif %}
+          {% endcapture %}
+
+          {% if section.settings.align_igtv_title == 'top' %}
+            {{ item_head }}
+          {% endif %}
+
+          
+          {% include 'IGTV-item' id: block.settings.igtv_id %}
+          
+
+          {% if section.settings.align_igtv_title == 'bottom' %}
+            {{ item_head }}
+          {% endif %}
+          {% endcomment %}
+        </div>
+      {% endif %}
+
+      {% if forloop.last %}
+        </div>
+      {% endif %}
+
+    {% endif %}
+  {% endfor %}
+</div>
+
+<script async src="//www.instagram.com/embed.js"></script>
+{% comment %}
+<script>
+var _igtv = [];
+var _igtvItems = [];
+
+
+function getIGphoto(url) {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      url: url,
+      success: function (data) {
+        resolve(data)
+      },
+      error: function (error) {
+        reject(error)
+      },
+    })
+  })
+}
+
+document.addEventListener("load:igtv", function(event){
+  var res = event.detail
+
+  _igtvItems.push({url: res.url, tab: res.tab})
+
+  if($('.video-content .video-item').length == _igtvItems.length) {
+    _igtvItems.forEach(function(r, i){
+      getIGphoto(r.url)
+      .then((data) => {
+        $('#shopify-section-tutorial-igtv .video-item:eq('+ r.tab +') blockquote').append($(data).find('.EmbedFrame').html());
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    })
+  }
+})
+</script>
+<script src="{{ 'instagram_embed.js' | asset_url }}" async></script>
+{% endcomment %}
+
+{% endif %}
+
+{% schema %}
+{
+  "name": "IGTV",
+  "max_blocks": 50,
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Title",
+      "default": "Lou Lou Tutorials"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sub title",
+      "default": "by founder Karen"
+    },
+    {
+      "type": "text",
+      "id": "popular_video_title",
+      "label": "Popular video title",
+      "default": "most popular"
+    },
+    {
+      "type": "text",
+      "id": "all_video_title",
+      "label": "All video title",
+      "default": "All videos"
+    },
+    {
+      "type": "select",
+      "id": "align_igtv_title",
+      "label": "Align IGTV title",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "top"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "instagram",
+      "name": "IGTV",
+      "settings": [
+        {
+          "type": "text",
+          "id": "video_title",
+          "label": "Title",
+          "default": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "igtv_embed_code",
+          "label": "Embed Code"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

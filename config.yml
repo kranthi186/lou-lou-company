@@ -1,0 +1,8 @@
+development:
+  password: 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
+  theme_id: "125462806705"
+  store: lou-lou-company.myshopify.com
+  ignore_files:
+    - "*.gif"
+    - "*.jpg"
+    - config/settings_data.json

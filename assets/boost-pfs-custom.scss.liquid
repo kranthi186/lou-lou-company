@@ -1,0 +1,88 @@
+/*********************** Custom CSS for Boost Filter & Search  ************************/
+$breakpointMobile: 767px;
+$breakpointSearchMobile: 767px;
+$searchBoxMobileHeight: 64px;
+
+/**************************** Place your custom css below  ****************************/
+.boost-pfs-filter-tree-h {
+	margin-top: 40px;
+	text-align: center;
+}
+.boost-pfs-filter-tree-h .boost-pfs-filter-option .boost-pfs-filter-option-content {
+	text-align: left;
+}
+/*.PageTransition {
+	display: none!important;
+}*/
+.boost-pfs-filter-selection-wrapper {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 95%;
+}
+@media (max-width: 767px){
+	.boost-pfs-filter-tree-v .boost-pfs-filter-option .boost-pfs-filter-option-title .boost-pfs-filter-option-title-heading > span:before {
+		border: none;
+		content: '-';
+		font-size: 40px;
+		position: absolute;
+		right: 6px;
+		top: -4px;
+	}
+	.boost-pfs-filter-tree-v .boost-pfs-filter-option.boost-pfs-filter-option-collapsed .boost-pfs-filter-option-title .boost-pfs-filter-option-title-heading > span:before {
+		content: '+';
+		right: 6px;
+		top: 0;
+		font-size: 25px;
+	}
+	.boost-pfs-filter-tree-v  .boost-pfs-filter-option .boost-pfs-filter-option-title .boost-pfs-filter-option-title-heading {
+		color: #5c5c5c;
+		font-size: 15px;
+		font-weight: normal;
+		text-transform: capitalize;
+	}
+	.boost-pfs-filter-tree-v .boost-pfs-filter-option .boost-pfs-filter-option-title {
+		position: relative;
+	}
+	.boost-pfs-filter-tree-v .boost-pfs-filter-option  {
+		padding-left: 25px;
+		padding-right: 25px;
+	}
+	.boost-pfs-filter-tree-v {
+		display: block!important;
+		padding-top: 20px;
+	}
+	.boost-pfs-filter-tree-v  .boost-pfs-filter-selection-wrapper {
+		padding-left: 25px;
+		padding-right: 25px;
+	}
+	.boost-pfs-filter-tree-v .boost-pfs-filter-option .boost-pfs-filter-option-title .boost-pfs-filter-clear {
+		margin-right: 25px;
+	}
+	.boost-pfs-filter-products .ProductItem {
+		visibility: inherit !important;
+	}
+}
+.boost-pfs-filter-products {
+  &.ProductList--grid {
+	.ProductItem {
+	  visibility: visible !important;
+	}
+  } 
+}
+/* Search style */
+.boost-pfs-search-box {
+  box-shadow: none !important;
+}
+@media (max-width: 767px){
+  .boost-pfs-search-suggestion-wrapper, .boost-pfs-search-suggestion {
+	left: 0px !important;
+	width: 100vw !important;
+  }
+}
+/* Filter mobile style */
+@media (max-width: 767px){
+  	.boost-pfs-filter-tree-v {
+  		display: block !important;
+      	width: auto !important;
+    }
+}

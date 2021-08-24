@@ -1,0 +1,227 @@
+{%- if section.settings.enable_bar -%}
+{% assign active = false %}
+
+  {% capture announcement %}
+  {% if section.blocks.size > 0 %}
+    {%- for block in section.blocks -%}
+      {% unless block.settings.collection != blank %}
+        {% continue %}
+      {% endunless %}
+
+      {% assign _collection = collections[block.settings.collection] %}
+      {% if template contains 'collection' %}
+        {% if collection.handle == _collection.handle %}
+          {% assign active = true %}
+        {% endif %}
+      {% elsif template contains 'product' %}
+        {% assign all_products_handle = _collection.products | map: "handle" %}
+        {% assign all_products_handle = all_products_handle | join: ' ' %}
+        
+        {% if all_products_handle contains product.handle %}
+          {% assign active = true %}
+        {% endif %}
+      {% endif %}
+
+      {% if active %}
+        {% if block.settings.content_1 != blank %}
+        <p class="AnnouncementBar__Content Heading fade">
+          {%- if block.settings.link_1 != blank -%}
+            <a href="{{ block.settings.link_1 }}">{{ block.settings.content_1 | escape }}</a>
+          {%- else -%}
+            {{ block.settings.content_1 | escape }}
+          {%- endif -%}
+        </p>
+        {% endif %}
+
+        {% if block.settings.content_2 != blank %}
+        <p class="AnnouncementBar__Content Heading fade">
+          {%- if block.settings.link_2 != blank -%}
+            <a href="{{ block.settings.link_2 }}">{{ block.settings.content_2 | escape }}</a>
+          {%- else -%}
+            {{ block.settings.content_2 | escape }}
+          {%- endif -%}
+        </p>
+        {% endif %}
+
+        {% if block.settings.content_3 != blank %}
+        <p class="AnnouncementBar__Content Heading fade">
+          {%- if block.settings.link_3 != blank -%}
+            <a href="{{ block.settings.link_3 }}">{{ block.settings.content_3 | escape }}</a>
+          {%- else -%}
+            {{ block.settings.content_3 | escape }}
+          {%- endif -%}
+        </p>
+        {% endif %}
+
+        {% break %}
+      {% endif %}
+
+    {% endfor %}
+  {% endif %}
+  {% endcapture %}
+
+  {% capture defaultAnnouncement %}
+    {% if section.settings.content_1 != blank %}
+    <p class="AnnouncementBar__Content Heading fade">
+      {%- if section.settings.link_1 != blank -%}
+        <a href="{{ section.settings.link_1 }}">{{ section.settings.content_1 | escape }}</a>
+      {%- else -%}
+        {{ section.settings.content_1 | escape }}
+      {%- endif -%}
+    </p>
+    {% endif %}
+
+    {% if section.settings.content_2 != blank %}
+    <p class="AnnouncementBar__Content Heading fade">
+      {%- if section.settings.link_2 != blank -%}
+        <a href="{{ section.settings.link_2 }}">{{ section.settings.content_2 | escape }}</a>
+      {%- else -%}
+        {{ section.settings.content_2 | escape }}
+      {%- endif -%}
+    </p>
+    {% endif %}
+
+    {% if section.settings.content_3 != blank %}
+    <p class="AnnouncementBar__Content Heading fade">
+      {%- if section.settings.link_3 != blank -%}
+        <a href="{{ section.settings.link_3 }}">{{ section.settings.content_3 | escape }}</a>
+      {%- else -%}
+        {{ section.settings.content_3 | escape }}
+      {%- endif -%}
+    </p>
+    {% endif %}
+  {% endcapture %}
+
+  <section id="section-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="announcement-bar" data-rotate_time="{{section.settings.rotate_time}}" data-request="{{ request.path }}">
+    <div class="AnnouncementBar">
+      <div class="AnnouncementBar__Wrapper">{% if active %}{{ announcement }}{% else %}{{ defaultAnnouncement }}{% endif %}</div>
+    </div>
+  </section>
+  
+
+  <style>
+    #section-{{ section.id }} {
+      background: {{ section.settings.background }};
+      color: {{ section.settings.text_color }};
+    }
+  </style>
+
+  <script>
+    document.documentElement.style.setProperty('--announcement-bar-height', document.getElementById('shopify-section-announcement').offsetHeight + 'px');
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_bar",
+      "label": "Enable bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "rotate_time",
+      "label": "Rotate time(ms)",
+      "default": "3000"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Default Message",
+      "info": "The messages below show on All pages except for those pages that the blocks include."
+    },
+    {
+      "type": "textarea",
+      "id": "content_1",
+      "label": "Text 1",
+      "default": "20% Off Site Wide with: GIVETHANKS20 Through 11/16"
+    },
+    {
+      "type": "url",
+      "id": "link_1",
+      "label": "Link 1"
+    },
+    {
+      "type": "textarea",
+      "id": "content_2",
+      "label": "Text 2"
+    },
+    {
+      "type": "url",
+      "id": "link_2",
+      "label": "Link 2"
+    },
+    {
+      "type": "textarea",
+      "id": "content_3",
+      "label": "Text 3"
+    },
+    {
+      "type": "url",
+      "id": "link_3",
+      "label": "Link 3"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Message group",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "textarea",
+          "id": "content_1",
+          "label": "Text 1",
+          "default": "20% Off Site Wide with: GIVETHANKS20 Through 11/16"
+        },
+        {
+          "type": "url",
+          "id": "link_1",
+          "label": "Link 1"
+        },
+        {
+          "type": "textarea",
+          "id": "content_2",
+          "label": "Text 2",
+          "default": "20% Off Site Wide with: GIVETHANKS20 Through 11/16"
+        },
+        {
+          "type": "url",
+          "id": "link_2",
+          "label": "Link 2"
+        },
+        {
+          "type": "textarea",
+          "id": "content_3",
+          "label": "Text 3",
+          "default": "20% Off Site Wide with: GIVETHANKS20 Through 11/16"
+        },
+        {
+          "type": "url",
+          "id": "link_3",
+          "label": "Link 3"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,63 @@
+<div class="Container Text--alignCenter Rte">
+    <h3 class="SectionHeader__SubHeading Heading u-h6">{{section.settings.pre_heading}}</h3>
+    <h2 class="SectionHeader__Heading Heading u-h1">{{section.settings.title}}</h2>
+    <div class="SectionHeading__Description">
+        <p>{{section.settings.text}}</p>
+    </div>
+    <div class="row">
+        {% for block in section.blocks %}
+        <div class="BlockIcon--item Icon_Title">
+            {{block.settings.icon}}
+            <span>{{block.settings.title}}</span>
+        </div>
+        {% endfor %}
+        
+    </div>
+</div>
+{% schema %}
+{
+    "name": "Featured icons",
+    "class": "featured-icons",
+    "settings": [
+        {
+            "type": "text",
+            "id": "pre_heading",
+            "label": "Pre heading"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+        },
+        {
+            "type": "text",
+            "id": "text",
+            "label": "Text"
+        }
+    ],
+    "blocks": [
+        {
+            "name": "icon",
+            "type": "icon",
+            "settings": [
+                {
+                    "type": "html",
+                    "id": "icon",
+                    "label": "Icon"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+        "category": "Icon",
+        "name": "Featured Icons"
+        }
+    ]
+}
+{% endschema %}
